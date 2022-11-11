@@ -1,1 +1,3 @@
-# kmou_Capstone_Sleep_Detection
+# 캡스톤 졸음감지
+
+캡스톤 리포지토리 입니다.
