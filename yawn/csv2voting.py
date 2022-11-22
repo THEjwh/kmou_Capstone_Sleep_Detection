@@ -19,27 +19,32 @@ mouth_data = pd.read_csv("mouth_data.csv")
 from sklearn.utils import shuffle
 mouth_data = shuffle(mouth_data,random_state=26)
 
-train=mouth_data['rate']
-test=mouth_data['state']
+train=mouth_data['rate'].to_numpy()
+test=mouth_data['state'].to_numpy()
+
 
 #train, test 만들기
 from sklearn.model_selection import train_test_split
 train_input,test_input,train_target,test_target = train_test_split(train,test,test_size=0.2)
 
 
+train_input = train_input.reshape(-1,1)
+test_input = test_input.reshape(-1,1)
 
 
 #회귀트리 코드 & 그리드 서치
 #from scipy.stats import uniform,randint
 from sklearn.model_selection import GridSearchCV
 #from xgboost import XGBClassifier
-from sklearn.ensemble import GradientBoostingRegressor
-gb =GradientBoostingRegressor()
+#from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import ExtraTreesRegressor
+
+ex=ExtraTreesRegressor()
 params={'n_estimators' :np.arange(500), 
-        'learning_rate': np.arange(0.1,1,0.1),
+        #'learning_rate': np.arange(0.1,1,0.1),
         'max_depth':np.arange(10) 
         }
-grid = GridSearchCV(gb,params,n_jobs =-1)
+grid = GridSearchCV(ex,params,n_jobs =-1)
 grid.fit(train_input,train_target)
 print(grid.best_params_)  #최상 조합 출력
 print(np.max(grid.cv_results_['mean_test_score']))
