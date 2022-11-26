@@ -26,12 +26,68 @@ video = cv2.VideoCapture(0)
 prev_time = 0
 FPS = 10
 
+eye_sec = 2 #
+eye_frame = 0
+eye_isclosed = False
+
+angle_sec = 2
+angle_frame = 0
+angle_isangled = False
+
+yawn_sec = 6
+yawn_frame = 0
+yawn_count = 0
+yawn_maxcount = 3
+yawn_isyawned = False
+yawn_iscounted = False
+
+sound_time = 0
+sound_prev = 0
+sound_interval = 0.5
+
 temp = 0
 real = 0
 
 hdp = 200
 nosetp = 6
 nosebp = 94 
+
+def sound():
+    sound_time = time.time() - sound_prev
+    if sound_time > sound_interval:
+        sound_prev = time.time()
+
+
+def framecount():
+    if eye_isclosed:
+        eye_frame += 1
+    else:
+        eye_frame = 0
+    
+    if yawn_isyawned:
+        yawn_frame += 1
+    else:
+        yawn_iscounted = False
+        yawn_frame = 0
+    
+    if angle_isangled:
+        angle_frame += 1
+    else:
+        angle_frame = 0
+
+
+def frameck():
+    if eye_frame >= eye_sec * FPS:
+        sound()
+    
+    if angle_frame >= angle_sec * FPS:
+        sound()
+
+    if yawn_frame >= yawn_sec * FPS:
+        if yawn_iscounted is False:
+            yawn_count += 1
+            yawn_iscounted = True
+
 
 with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detection_confidence = 0.5, min_tracking_confidence = 0.5) as face_mesh:
     while True:
@@ -106,23 +162,32 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                 
                 if real == 0:
                     #print(tdata)
+                    eye_isclosed = False
                     cv2.putText(image, 'open', (0,40) , tfont, 1,(0,255,0),2)
+                    
                 elif real == 1:
                     #print(tdata)
+                    eye_isclosed = True
                     cv2.putText(image, 'close', (0,40) , tfont, 1,(0,255,0),2)
 
                 if test_a[0] == 0:
+                    angle_isangled = False
                     cv2.putText(image, 'normal', (0,80) , tfont, 1,(0,255,0),2)
                 elif test_a[0] == 1:
+                    angle_isangled = True
                     cv2.putText(image, 'down', (0,80) , tfont, 1,(0,255,0),2)
                 
                 if round(test_m[0], 3) > 0.96:
+                    yawn_isyawned = True
                     cv2.putText(image, 'yawn', (0,120) , tfont, 1,(0,255,0),2)
                 elif round(test_m[0], 3) <= 0.96:
+                    yawn_isyawned = False
                     cv2.putText(image, 'no yawn', (0,120) , tfont, 1,(0,255,0),2)
                 
                 temp = test[0]
                 #print(test_m[0])
+                framecount()
+                frameck()
             
             cv2.imshow('Video', image)
             if cv2.waitKey(1) > 0:
