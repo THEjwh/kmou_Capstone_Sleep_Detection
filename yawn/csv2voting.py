@@ -45,7 +45,7 @@ from sklearn.model_selection import StandardScaler
 ss=StandardScaler()
 ss.fit(train_input)
 train_input = ss.transform(train_input)
-train_target = ss.transform(train_target)
+train_target = ss.transform(train_input)
 
 
 #회귀트리 코드 & 그리드 서치
