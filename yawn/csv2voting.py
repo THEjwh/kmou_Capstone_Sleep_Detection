@@ -31,6 +31,22 @@ train_input,test_input,train_target,test_target = train_test_split(train,test,te
 train_input = train_input.reshape(-1,1)
 test_input = test_input.reshape(-1,1)
 
+#데이터 모습 보기
+import matplotlib.pyplot as plt
+plt.scatter(train_input,train_target)
+plt.xlabel('rate')
+plt.ylabel('state')
+plt.show()
+
+
+
+#정규화 단계
+from sklearn.model_selection import StandardScaler
+ss=StandardScaler()
+ss.fit(train_input)
+train_input = ss.transform(train_input)
+train_target = ss.transform(train_target)
+
 
 #회귀트리 코드 & 그리드 서치
 #from scipy.stats import uniform,randint
@@ -41,7 +57,7 @@ from sklearn.ensemble import ExtraTreesRegressor
 
 ex=ExtraTreesRegressor()
 params={'n_estimators' :np.arange(500), 
-        #'learning_rate': np.arange(0.1,1,0.1),
+        'learning_rate': np.arange(0.1,1,0.1),
         'max_depth':np.arange(10) 
         }
 grid = GridSearchCV(ex,params,n_jobs =-1)
@@ -53,7 +69,29 @@ print(np.max(grid.cv_results_['mean_test_score']))
 dt=grid.best_estimator_
 print(dt.score(test_input,test_target))
 
-            
+#선형회귀
+from sklearn.linear_model import LinearRegression
+lr_r=LinearRegression()
+lr_r.fit(train_input,train_target)
+
+
+#lr_r.coef_ : 기울기 / lr_r.intercept_ : y절편
+# 선 긋는 거 plt.plot() 
+
+
+
+
+
+#로지트틱 회귀트리
+from sklearn.linear_model import LogisticRegression
+lr= LogisticRegression()
+lr.fit(train_input,train_target)
+decision = lr.predict_proba(train_input)
+
+from scipy.special import expit  #시모이드 함수
+print(expit(decision))
+
+
 
 
 # #보팅
