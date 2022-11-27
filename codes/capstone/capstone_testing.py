@@ -17,7 +17,7 @@ def calculate_EAR(p1, p2, p3):
     ear = (p1 + p2) / (2.0 * p3)
     return ear
 
-ear_model = joblib.load('./ear_model2.pkl')
+ear_model = joblib.load('./ear_model_p.pkl')
 angle_model = joblib.load('./angle_model.pkl')
 mouth_model = joblib.load('./mouth_model.pkl')
 mp_face_mesh = mp.solutions.face_mesh
@@ -32,6 +32,7 @@ eye_isclosed = False
 
 angle_sec = 2
 angle_frame = 0
+angle_frame = 0
 angle_isangled = False
 
 yawn_sec = 6
@@ -45,6 +46,8 @@ sound_time = 0
 sound_prev = 0
 sound_interval = 0.5
 
+nowco2 = 0
+
 temp = 0
 real = 0
 
@@ -53,12 +56,25 @@ nosetp = 6
 nosebp = 94 
 
 def sound():
+    global sound_time
+    global sound_prev
+    global sound_interval
+
     sound_time = time.time() - sound_prev
     if sound_time > sound_interval:
         sound_prev = time.time()
+        print('sound')
 
 
 def framecount():
+    global eye_isclosed
+    global eye_frame
+    global yawn_isyawned
+    global yawn_frame
+    global yawn_iscounted
+    global angle_isangled
+    global angle_frame
+
     if eye_isclosed:
         eye_frame += 1
     else:
@@ -74,19 +90,6 @@ def framecount():
         angle_frame += 1
     else:
         angle_frame = 0
-
-
-def frameck():
-    if eye_frame >= eye_sec * FPS:
-        sound()
-    
-    if angle_frame >= angle_sec * FPS:
-        sound()
-
-    if yawn_frame >= yawn_sec * FPS:
-        if yawn_iscounted is False:
-            yawn_count += 1
-            yawn_iscounted = True
 
 
 with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detection_confidence = 0.5, min_tracking_confidence = 0.5) as face_mesh:
@@ -155,17 +158,14 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                 test_m = mouth_model.predict([[mouth_ratio]])
                 tfont=cv2.FONT_HERSHEY_SIMPLEX
 
-                if test[0] == 0 and temp == 0:
-                    real = 0
-                elif test[0] == 1 and temp == 1:
-                    real = 1
+
                 
-                if real == 0:
+                if test[0] < 0.55:
                     #print(tdata)
                     eye_isclosed = False
                     cv2.putText(image, 'open', (0,40) , tfont, 1,(0,255,0),2)
                     
-                elif real == 1:
+                elif test[0] >= 0.55:
                     #print(tdata)
                     eye_isclosed = True
                     cv2.putText(image, 'close', (0,40) , tfont, 1,(0,255,0),2)
@@ -187,7 +187,17 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                 temp = test[0]
                 #print(test_m[0])
                 framecount()
-                frameck()
+
+                if eye_frame >= eye_sec * FPS:
+                    sound()
+
+                if angle_frame >= angle_sec * FPS:
+                    sound()
+
+                if yawn_frame >= yawn_sec * FPS:
+                    if yawn_iscounted is False:
+                        yawn_count += 1
+                        yawn_iscounted = True
             
             cv2.imshow('Video', image)
             if cv2.waitKey(1) > 0:
