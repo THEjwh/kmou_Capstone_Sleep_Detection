@@ -4,10 +4,20 @@ import pandas as pd
 import numpy as np
 import mediapipe as mp
 #import sklearn
+import serial
+import RPi.GPIO as GPIO
 import joblib
 from scipy.spatial import distance
 import warnings
+
 warnings.filterwarnings('ignore')
+
+buzzer = 18
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(buzzer, GPIO.OUT)
+GPIO.setwarnings(False)
+co2 = serial.Serial('/dev/ttyACM0', 9600)
+co2.flushInput()
 
 def point_dist(p1, p2):
     d = distance.euclidean([p1.x, p1.y], [p2.x, p2.y])
@@ -55,15 +65,34 @@ hdp = 200
 nosetp = 6
 nosebp = 94 
 
-def sound():
+use_sound = False
+pwm = GPIO.PWM(buzzer, 523)
+
+
+def sound2(r, do):
+    global pwm
+    scale = [262,330,392,494,523]
+    if do:
+        pwm.ChangeFrequency(scale[r])
+        pwm.start(50.0)
+    else:
+        pwm.stop()
+
+
+
+def sound(r):
     global sound_time
     global sound_prev
     global sound_interval
+    global use_sound
 
     sound_time = time.time() - sound_prev
     if sound_time > sound_interval:
         sound_prev = time.time()
         print('sound')
+        use_sound = ~use_sound
+        sound2(r, use_sound)
+
 
 
 def framecount():
@@ -189,10 +218,10 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                 framecount()
 
                 if eye_frame >= eye_sec * FPS:
-                    sound()
+                    sound(3)
 
                 if angle_frame >= angle_sec * FPS:
-                    sound()
+                    sound(2)
 
                 if yawn_frame >= yawn_sec * FPS:
                     if yawn_iscounted is False:
