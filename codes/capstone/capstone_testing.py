@@ -16,8 +16,8 @@ buzzer = 18
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(buzzer, GPIO.OUT)
 GPIO.setwarnings(False)
-co2 = serial.Serial('/dev/ttyACM0', 9600)
-co2.flushInput()
+#co2 = serial.Serial('/dev/ttyACM0', 9600)
+#co2.flushInput()
 
 def point_dist(p1, p2):
     d = distance.euclidean([p1.x, p1.y], [p2.x, p2.y])
