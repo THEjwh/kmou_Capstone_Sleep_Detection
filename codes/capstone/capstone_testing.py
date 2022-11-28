@@ -34,7 +34,7 @@ mp_face_mesh = mp.solutions.face_mesh
 
 video = cv2.VideoCapture(0)
 prev_time = 0
-FPS = 10
+FPS = 4
 
 eye_sec = 2 #
 eye_frame = 0
