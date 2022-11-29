@@ -236,6 +236,3 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
             #cv2.imshow('Video', image)
             if cv2.waitKey(1) > 0:
                 break
-        else:
-            print('no camera!')
-            break
