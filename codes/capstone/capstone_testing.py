@@ -33,6 +33,8 @@ mouth_model = joblib.load('./mouth_model.pkl')
 mp_face_mesh = mp.solutions.face_mesh
 
 video = cv2.VideoCapture(0)
+video.set(cv2.CAP_PROP_FRAME_WIDTH, 480)
+video.set(cv2.CAP_PROP_FRAME_WIDTH, 360)
 prev_time = 0
 FPS = 2
 
