@@ -4,8 +4,8 @@ import pandas as pd
 import numpy as np
 import mediapipe as mp
 #import sklearn
-import serial
-import RPi.GPIO as GPIO
+#import serial
+#import RPi.GPIO as GPIO
 import joblib
 from scipy.spatial import distance
 import warnings
@@ -13,11 +13,11 @@ import warnings
 warnings.filterwarnings('ignore')
 
 buzzer = 18
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(buzzer, GPIO.OUT)
-GPIO.setwarnings(False)
-co2 = serial.Serial('/dev/ttyACM0', 9600)
-co2.flushInput()
+#GPIO.setmode(GPIO.BCM)
+#GPIO.setup(buzzer, GPIO.OUT)
+#GPIO.setwarnings(False)
+#co2 = serial.Serial('/dev/ttyACM0', 9600)
+#co2.flushInput()
 
 def point_dist(p1, p2):
     d = distance.euclidean([p1.x, p1.y], [p2.x, p2.y])
@@ -66,7 +66,7 @@ nosetp = 6
 nosebp = 94 
 
 use_sound = False
-pwm = GPIO.PWM(buzzer, 523)
+#pwm = GPIO.PWM(buzzer, 523)
 
 
 def sound2(r, do):
@@ -91,7 +91,7 @@ def sound(r):
         sound_prev = time.time()
         print('sound')
         use_sound = ~use_sound
-        sound2(r, use_sound)
+ #       sound2(r, use_sound)
 
 
 
@@ -122,11 +122,6 @@ def framecount():
 
 
 with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detection_confidence = 0.5, min_tracking_confidence = 0.5) as face_mesh:
-    ret, image = video.read()
-    if ret is True :
-        print('camera on')
-    else:
-        print('camera off')
     while True:
         ret, image = video.read()
 
@@ -219,7 +214,7 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                     cv2.putText(image, 'no yawn', (0,120) , tfont, 1,(0,255,0),2)
                 
                 temp = test[0]
-                print(test_m[0])
+                #print(test_m[0])
                 framecount()
 
                 if eye_frame >= eye_sec * FPS:
@@ -233,6 +228,6 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                         yawn_count += 1
                         yawn_iscounted = True
             
-            #cv2.imshow('Video', image)
+            cv2.imshow('Video', image)
             if cv2.waitKey(1) > 0:
                 break
