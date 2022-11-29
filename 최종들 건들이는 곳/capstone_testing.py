@@ -16,8 +16,8 @@ buzzer = 18
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(buzzer, GPIO.OUT)
 GPIO.setwarnings(False)
-#co2 = serial.Serial('/dev/ttyACM0', 9600)
-#co2.flushInput()
+co2 = serial.Serial('/dev/ttyACM0', 9600)
+co2.flushInput()
 
 def point_dist(p1, p2):
     d = distance.euclidean([p1.x, p1.y], [p2.x, p2.y])
@@ -34,11 +34,7 @@ mp_face_mesh = mp.solutions.face_mesh
 
 video = cv2.VideoCapture(0)
 prev_time = 0
-<<<<<<< HEAD
 FPS = 10 
-=======
-FPS = 4
->>>>>>> acf4fbf6b62b670b7f3bd3606ff5ca96f7cd4ad0
 
 eye_sec = 2 
 eye_frame = 0
@@ -126,11 +122,6 @@ def framecount():
 
 
 with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detection_confidence = 0.5, min_tracking_confidence = 0.5) as face_mesh:
-    ret, image = video.read()
-    if ret is True :
-        print('camera on')
-    else:
-        print('camera off')
     while True:
         ret, image = video.read()
 
@@ -223,7 +214,7 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                     cv2.putText(image, 'no yawn', (0,120) , tfont, 1,(0,255,0),2)
                 
                 temp = test[0]
-                print(test_m[0])
+                #print(test_m[0])
                 framecount()
 
                 if eye_frame >= eye_sec * FPS:
@@ -237,9 +228,6 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                         yawn_count += 1
                         yawn_iscounted = True
             
-            #cv2.imshow('Video', image)
+            cv2.imshow('Video', image)
             if cv2.waitKey(1) > 0:
                 break
-        else:
-            print('no camera!')
-            break
