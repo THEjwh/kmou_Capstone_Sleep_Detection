@@ -16,8 +16,8 @@ buzzer = 18
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(buzzer, GPIO.OUT)
 GPIO.setwarnings(False)
-co2 = serial.Serial('/dev/ttyACM0', 9600)
-co2.flushInput()
+#co2 = serial.Serial('/dev/ttyACM0', 9600)
+#co2.flushInput()
 
 def point_dist(p1, p2):
     d = distance.euclidean([p1.x, p1.y], [p2.x, p2.y])
@@ -34,7 +34,11 @@ mp_face_mesh = mp.solutions.face_mesh
 
 video = cv2.VideoCapture(0)
 prev_time = 0
+<<<<<<< HEAD
 FPS = 10 
+=======
+FPS = 4
+>>>>>>> acf4fbf6b62b670b7f3bd3606ff5ca96f7cd4ad0
 
 eye_sec = 2 
 eye_frame = 0
@@ -231,3 +235,6 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
             cv2.imshow('Video', image)
             if cv2.waitKey(1) > 0:
                 break
+        else:
+            print('no camera!')
+            break
