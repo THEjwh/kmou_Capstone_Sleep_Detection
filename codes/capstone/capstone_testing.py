@@ -78,6 +78,9 @@ def sound2(r, do):
     else:
         pwm.stop()
 
+def sound_stop():
+    pwm.stop()
+
 
 
 def sound(r):
@@ -107,6 +110,7 @@ def framecount():
     if eye_isclosed:
         eye_frame += 1
     else:
+        sound_stop()
         eye_frame = 0
     
     if yawn_isyawned:
@@ -114,10 +118,12 @@ def framecount():
     else:
         yawn_iscounted = False
         yawn_frame = 0
+        sound_stop()
     
     if angle_isangled:
         angle_frame += 1
     else:
+        sound_stop()
         angle_frame = 0
 
 
