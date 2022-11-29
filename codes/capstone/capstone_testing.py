@@ -199,35 +199,36 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                 if test[0] < 0.55:
                     #print(tdata)
                     eye_isclosed = False
-                    cv2.putText(image, 'open', (0,40) , tfont, 1,(0,255,0),2)
+                    print('open')
                     
                 elif test[0] >= 0.55:
                     #print(tdata)
                     eye_isclosed = True
-                    cv2.putText(image, 'close', (0,40) , tfont, 1,(0,255,0),2)
+                    print('close')
 
                 if test_a[0] == 0:
                     angle_isangled = False
-                    cv2.putText(image, 'normal', (0,80) , tfont, 1,(0,255,0),2)
+                    print('normal')
                 elif test_a[0] == 1:
                     angle_isangled = True
-                    cv2.putText(image, 'down', (0,80) , tfont, 1,(0,255,0),2)
-                
+                    print('down')
                 if round(test_m[0], 3) > 0.96:
                     yawn_isyawned = True
-                    cv2.putText(image, 'yawn', (0,120) , tfont, 1,(0,255,0),2)
+                    print('yawn')
                 elif round(test_m[0], 3) <= 0.96:
                     yawn_isyawned = False
-                    cv2.putText(image, 'no yawn', (0,120) , tfont, 1,(0,255,0),2)
+                    print('no yawn')
                 
                 temp = test[0]
                 print(test_m[0])
                 framecount()
 
                 if eye_frame >= eye_sec * FPS:
+                    print('eye sound')
                     sound(3)
 
                 if angle_frame >= angle_sec * FPS:
+                    print('angle sound')
                     sound(2)
 
                 if yawn_frame >= yawn_sec * FPS:
