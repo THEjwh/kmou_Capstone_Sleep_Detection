@@ -68,13 +68,18 @@ nosebp = 94
 use_sound = False
 pwm = GPIO.PWM(buzzer, 523)
 
+pwm_time = time.time()
+
+
 
 def sound2(r, do):
     global pwm
+    global pwm_time
     scale = [262,330,392,494,523]
     if do:
         pwm.ChangeFrequency(scale[r])
         pwm.start(50.0)
+        pwm_time = time.time()
     else:
         pwm.stop()
 
@@ -94,7 +99,8 @@ def sound(r):
         sound_prev = time.time()
         print('sound')
         use_sound = ~use_sound
-        sound2(r, use_sound)
+        #sound2(r, use_sound)
+        sound2(r, True)
 
 
 
@@ -134,6 +140,9 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
     else:
         print('camera off')
     while True:
+
+        if(time.time() - pwm_time >= 2):
+            pwm.stop()
         ret, image = video.read()
 
         current_time = time.time() - prev_time
@@ -228,11 +237,11 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
 
                 if eye_frame >= eye_sec * FPS:
                     print('eye sound')
-                    sound(3)
+                    sound(1)
 
                 if angle_frame >= angle_sec * FPS:
                     print('angle sound')
-                    sound(2)
+                    sound(1)
 
                 if yawn_frame >= yawn_sec * FPS:
                     if yawn_iscounted is False:
