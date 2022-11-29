@@ -137,6 +137,8 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
             results = face_mesh.process(image)
 
             if results.multi_face_landmarks:
+
+                print('face on')
                 rt = results.multi_face_landmarks[0].landmark[158]
                 rb = results.multi_face_landmarks[0].landmark[153]
                 lt = results.multi_face_landmarks[0].landmark[160]
