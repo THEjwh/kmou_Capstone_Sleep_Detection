@@ -117,7 +117,7 @@ def framecount():
     global yawn_iscounted
     global angle_isangled
     global angle_frame
-
+    
     if eye_isclosed:
         eye_frame += 1
     else:
