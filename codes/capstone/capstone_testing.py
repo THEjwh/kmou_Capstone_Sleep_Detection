@@ -145,16 +145,7 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
     else:
         print('camera off')
     while True:
-        cy = co2.readline()
-        cy = cy.decode()[:-2]
-        ppm = 0
-        cyl = cy.find('Co2 : ')
-        print(cy[cyl: cyl+2])
-
-        if ppm >= 1500:
-            GPIO.output(LED,True)
-        else:
-            GPIO.output(LED, False)
+        
 
         if(time.time() - pwm_time >= 2):
             pwm.stop()
@@ -163,6 +154,16 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
         current_time = time.time() - prev_time
 
         if (ret is True) and (current_time > 1./FPS):
+            cy = co2.readline()
+            cy = cy.decode()[:-2]
+            ppm = 0
+            cyl = cy.find('Co2 : ')
+            print(cy[cyl: cyl+2])
+    
+            if ppm >= 1500:
+                GPIO.output(LED, True)
+            else:
+                GPIO.output(LED, False)
             prev_time = time.time()
             results = face_mesh.process(image)
 
