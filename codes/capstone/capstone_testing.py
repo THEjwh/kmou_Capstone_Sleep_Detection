@@ -30,7 +30,7 @@ def calculate_EAR(p1, p2, p3):
     ear = (p1 + p2) / (2.0 * p3)
     return ear
 
-ear_model = joblib.load('./ear_model_p.pkl')
+ear_model = joblib.load('./eyes_model_2_real.pkl')
 angle_model = joblib.load('./angle_model.pkl')
 mouth_model = joblib.load('./mouth_model.pkl')
 mp_face_mesh = mp.solutions.face_mesh
@@ -82,7 +82,7 @@ def sound2(r, do):
     global pwm_time
     scale = [262,330,392,494,523]
     if do:
-        pwm.ChangeFrequency(scale[r])
+        pwm.ChangeFrequency(scale[0])
         pwm.start(50.0)
         pwm_time = time.time()
     else:
@@ -220,14 +220,13 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                 test_m = mouth_model.predict([[mouth_ratio]])
                 tfont=cv2.FONT_HERSHEY_SIMPLEX
 
-
                 
-                if test[0] < 0.55:
+                if test[0] == 0:
                     #print(tdata)
                     eye_isclosed = False
                     print('open')
                     
-                elif test[0] >= 0.55:
+                elif test[0] == 1:
                     #print(tdata)
                     eye_isclosed = True
                     print('close')
@@ -235,12 +234,15 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                 if test_a[0] == 0:
                     angle_isangled = False
                     print('normal')
+                
                 elif test_a[0] == 1:
                     angle_isangled = True
                     print('down')
+                
                 if round(test_m[0], 3) > 0.96:
                     yawn_isyawned = True
                     print('yawn')
+                
                 elif round(test_m[0], 3) <= 0.96:
                     yawn_isyawned = False
                     print('no yawn')

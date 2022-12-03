@@ -3,7 +3,9 @@ import time
 import pandas as pd
 import numpy as np
 import mediapipe as mp
-#import sklearn
+import sklearn
+from sklearn.ensemble import _hist_gradient_boosting
+#_hist_gradient_boosting.
 #import serial
 #import RPi.GPIO as GPIO
 import joblib
@@ -12,7 +14,7 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
-buzzer = 18
+#buzzer = 18
 #GPIO.setmode(GPIO.BCM)
 #GPIO.setup(buzzer, GPIO.OUT)
 #GPIO.setwarnings(False)
@@ -27,7 +29,7 @@ def calculate_EAR(p1, p2, p3):
     ear = (p1 + p2) / (2.0 * p3)
     return ear
 
-ear_model = joblib.load('./ear_model_p.pkl')
+ear_model = joblib.load('./eyes_model_2_real.pkl')
 angle_model = joblib.load('./angle_model.pkl')
 mouth_model = joblib.load('./mouth_model.pkl')
 mp_face_mesh = mp.solutions.face_mesh
@@ -189,12 +191,12 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
 
 
                 
-                if test[0] < 0.55:
+                if test[0] == 0:
                     #print(tdata)
                     eye_isclosed = False
                     cv2.putText(image, 'open', (0,40) , tfont, 1,(0,255,0),2)
                     
-                elif test[0] >= 0.55:
+                elif test[0] == 1:
                     #print(tdata)
                     eye_isclosed = True
                     cv2.putText(image, 'close', (0,40) , tfont, 1,(0,255,0),2)
@@ -208,10 +210,19 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                 
                 if round(test_m[0], 3) > 0.96:
                     yawn_isyawned = True
-                    cv2.putText(image, 'yawn', (0,120) , tfont, 1,(0,255,0),2)
+                    cv2.putText(image, 'yawn', (0, 120),
+                                tfont, 1, (0, 255, 0), 2)
                 elif round(test_m[0], 3) <= 0.96:
                     yawn_isyawned = False
-                    cv2.putText(image, 'no yawn', (0,120) , tfont, 1,(0,255,0),2)
+                    cv2.putText(image, 'no yawn', (0, 120),
+                                tfont, 1, (0, 255, 0), 2)
+                
+                # if test_m[0] == 0:
+                #     yawn_isyawned = True
+                #     cv2.putText(image, 'yawn', (0,120) , tfont, 1,(0,255,0),2)
+                # elif test_m[0] == 1:
+                #     yawn_isyawned = False
+                #     cv2.putText(image, 'no yawn', (0,120) , tfont, 1,(0,255,0),2)
                 
                 temp = test[0]
                 #print(test_m[0])
