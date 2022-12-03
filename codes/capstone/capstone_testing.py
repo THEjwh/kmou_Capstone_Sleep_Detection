@@ -160,8 +160,8 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
             cyl = cy.find('Co2 : ')
             if cyl != -1:
                 c2str = cy[cyl:]
-                c2str = c2str[-2:]
-                print(c2str)
+                c2str = c2str[-3:]
+                ppm = float(c2str)
 
             if ppm >= 1500:
                 GPIO.output(LED, True)
