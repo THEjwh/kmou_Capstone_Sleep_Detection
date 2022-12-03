@@ -268,6 +268,10 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                     if yawn_iscounted is False:
                         yawn_count += 1
                         yawn_iscounted = True
+                
+                if yawn_maxcount <= yawn_count:
+                    sound(1)
+                    yawn_count = 0
             else:
                 sound_stop()
             #cv2.imshow('Video', image)
