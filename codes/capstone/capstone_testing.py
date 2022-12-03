@@ -147,10 +147,8 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
     while True:
         cy = co2.readline()
         cy = cy.decode()[:-2]
-        if cy != '>>':
-            ppm = float(cy)
-        else:
-            ppm = 0
+        ppm = 0
+        print(cy)
 
         if ppm >= 1500:
             GPIO.output(LED,True)
