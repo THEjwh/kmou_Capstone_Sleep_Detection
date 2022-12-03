@@ -41,11 +41,11 @@ video.set(cv2.CAP_PROP_FRAME_WIDTH, 360)
 prev_time = 0
 FPS = 2
 
-eye_sec = 2 
+eye_sec = 1
 eye_frame = 0
 eye_isclosed = False
 
-angle_sec = 2
+angle_sec = 1
 angle_frame = 0
 angle_frame = 0
 angle_isangled = False
@@ -156,16 +156,16 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
         if (ret is True) and (current_time > 1./FPS):
             cy = co2.readline()
             cy = cy.decode()[:-2]
-            ppm = 0
+            ppm = -1
             cyl = cy.find('Co2 : ')
             if cyl != -1:
                 c2str = cy[cyl:]
                 c2str = c2str[-3:]
                 ppm = float(c2str)
 
-            if ppm >= 1500:
+            if ppm >= 500:
                 GPIO.output(LED, True)
-            else:
+            elif ppm != -1:
                 GPIO.output(LED, False)
             prev_time = time.time()
             results = face_mesh.process(image)
