@@ -72,13 +72,15 @@ use_sound = False
 
 
 def sound2(r, do):
-    global pwm
+#    global pwm
     scale = [262,330,392,494,523]
     if do:
-        pwm.ChangeFrequency(scale[r])
-        pwm.start(50.0)
+        print('sound')
+#        pwm.ChangeFrequency(scale[r])
+#        pwm.start(50.0)
     else:
-        pwm.stop()
+        print('soundoff')
+#        pwm.stop()
 
 
 
@@ -91,9 +93,8 @@ def sound(r):
     sound_time = time.time() - sound_prev
     if sound_time > sound_interval:
         sound_prev = time.time()
-        print('sound')
         use_sound = ~use_sound
- #       sound2(r, use_sound)
+        sound2(r, use_sound)
 
 
 
