@@ -13,11 +13,14 @@ import warnings
 warnings.filterwarnings('ignore')
 
 buzzer = 18
+LED = 17
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(buzzer, GPIO.OUT)
+GPIO.setup(LED, GPIO.OUT)
 GPIO.setwarnings(False)
-#co2 = serial.Serial('/dev/ttyACM0', 9600)
-#co2.flushInput()
+co2 = serial.Serial('/dev/ttyACM0', 9600)
+co2.flushInput()
 
 def point_dist(p1, p2):
     d = distance.euclidean([p1.x, p1.y], [p2.x, p2.y])
@@ -142,6 +145,14 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
     else:
         print('camera off')
     while True:
+        cy = co2.readline()
+        cy = cy.decode()[:-2]
+        ppm = float(cy)
+
+        if ppm >= 1500:
+            GPIO.output(LED,True)
+        else:
+            GPIO.output(LED, False)
 
         if(time.time() - pwm_time >= 2):
             pwm.stop()
