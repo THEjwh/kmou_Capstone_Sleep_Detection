@@ -163,6 +163,7 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                 c2str = cy[cyl:]
                 c2str = c2str[-4:].lstrip()
                 ppm = float(c2str)
+                print(ppm)
 
             if ppm >= co2ck:
                 GPIO.output(LED, True)
