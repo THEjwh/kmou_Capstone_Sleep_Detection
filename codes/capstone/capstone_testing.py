@@ -62,7 +62,7 @@ sound_prev = 0
 sound_interval = 0.5
 
 nowco2 = 0
-co2ck = 600
+co2ck = 1000
 
 temp = 0
 real = 0
