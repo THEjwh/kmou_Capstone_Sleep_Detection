@@ -9,6 +9,7 @@ import RPi.GPIO as GPIO
 import joblib
 from scipy.spatial import distance
 import warnings
+import os
 
 warnings.filterwarnings('ignore')
 
@@ -30,9 +31,9 @@ def calculate_EAR(p1, p2, p3):
     ear = (p1 + p2) / (2.0 * p3)
     return ear
 
-ear_model = joblib.load('./eyes_model_2_real.pkl')
-angle_model = joblib.load('./angle_model.pkl')
-mouth_model = joblib.load('./mouth_model.pkl')
+ear_model = joblib.load(os.getcwd() + '/eyes_model_2_real.pkl')
+angle_model = joblib.load(os.getcwd() + '/angle_model.pkl')
+mouth_model = joblib.load(os.getcwd() + '/mouth_model.pkl')
 mp_face_mesh = mp.solutions.face_mesh
 
 video = cv2.VideoCapture(0)
