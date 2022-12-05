@@ -82,7 +82,7 @@ def sound2(r, do):
     global pwm_time
     scale = [262,330,392,494,523]
     if do:
-        pwm.ChangeFrequency(scale[0])
+        pwm.ChangeFrequency(scale[r])
         pwm.start(50.0)
         pwm_time = time.time()
     else:
@@ -160,7 +160,7 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
             cyl = cy.find('Co2 : ')
             if cyl != -1:
                 c2str = cy[cyl:]
-                c2str = c2str[-3:]
+                c2str = c2str[-4:].lstrip()
                 ppm = float(c2str)
 
             if ppm >= 500:
