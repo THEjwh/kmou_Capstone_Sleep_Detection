@@ -41,11 +41,11 @@ video.set(cv2.CAP_PROP_FRAME_WIDTH, 360)
 prev_time = 0
 FPS = 2
 
-eye_sec = 1
+eye_sec = 2
 eye_frame = 0
 eye_isclosed = False
 
-angle_sec = 1
+angle_sec = 2
 angle_frame = 0
 angle_frame = 0
 angle_isangled = False
@@ -271,6 +271,7 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                         yawn_iscounted = True
                 
                 if yawn_maxcount <= yawn_count:
+                    GPIO.output(LED, True)
                     sound(1)
                     yawn_count = 0
             else:
