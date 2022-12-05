@@ -62,6 +62,7 @@ sound_prev = 0
 sound_interval = 0.5
 
 nowco2 = 0
+co2ck = 600
 
 temp = 0
 real = 0
@@ -163,7 +164,7 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                 c2str = c2str[-4:].lstrip()
                 ppm = float(c2str)
 
-            if ppm >= 500:
+            if ppm >= co2ck:
                 GPIO.output(LED, True)
             elif ppm != -1:
                 GPIO.output(LED, False)
