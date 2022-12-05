@@ -31,9 +31,12 @@ def calculate_EAR(p1, p2, p3):
     ear = (p1 + p2) / (2.0 * p3)
     return ear
 
-ear_model = joblib.load(os.getcwd() + '/eyes_model_2_real.pkl')
-angle_model = joblib.load(os.getcwd() + '/angle_model.pkl')
-mouth_model = joblib.load(os.getcwd() + '/mouth_model.pkl')
+
+ear_model = joblib.load(os.path.dirname(
+    os.path.realpath(__file__)) + '/eyes_model_2_real.pkl')
+angle_model = joblib.load(os.path.dirname(
+    os.path.realpath(__file__)) + '/angle_model.pkl')
+mouth_model = joblib.load(os.path.dirname(os.path.realpath(__file__)) + '/mouth_model.pkl')
 mp_face_mesh = mp.solutions.face_mesh
 
 video = cv2.VideoCapture(0)
