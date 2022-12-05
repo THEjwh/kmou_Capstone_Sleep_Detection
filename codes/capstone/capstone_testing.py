@@ -270,6 +270,8 @@ with mp_face_mesh.FaceMesh(max_num_faces = 1, refine_landmarks = True, min_detec
                     if yawn_iscounted is False:
                         yawn_count += 1
                         yawn_iscounted = True
+
+                print('yawn_count: ' + str(yawn_count))
                 
                 if yawn_maxcount <= yawn_count:
                     GPIO.output(LED, True)
